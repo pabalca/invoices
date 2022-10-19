@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit Password{% endblock %}
+{% block title %}Edit Invoice{% endblock %}
 
 {% block content %}
 
@@ -17,19 +17,5 @@
 {% endfor %}
 </form>
 <br>
-<form method="post">
-{{ form2.hidden_tag() }}
-{% for field in form2 if field.widget.input_type != 'hidden' %}
-{% if field.type == "SubmitField" %}
-    {{ field(class='btn btn-danger') }}
-{% else %}
-    <div class="form-group">
-      {{ field.label }} {{ field(class='form-control') }}
-    </div>
-{% endif %}
-{% endfor %}
-</form>
-
-
 
 {% endblock %}

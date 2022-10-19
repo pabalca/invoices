@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        
+<p><a href="{{ url_for('new_company') }}">Create company</a><p>
+
+
+{% if companies %}
+<div class="list-group">
+  {% for company in companies %}
+    <div onclick="clipboard('{{company.id}}')" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ company.name }} : {{ company.kvk }}</h5>
+      <div>
+        <small><a href="{{ url_for('delete_company', company_id=company.id) }}">delete</a></small>
+      </div>
+    </div>
+    <p class="mb-1">{{ company.address }}</p>
+    <input hidden type="text" id="{{company.id}}" value="{{company.kvk}}">
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p>You have not saved any companies yet.</p>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function clipboard(data_id) {
+    var copyText = document.getElementById(data_id);
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard
+      .writeText(copyText.value)
+//      .then(() => {
+//        alert("successfully copied");
+//      })
+//      .catch(() => {
+//        alert("something went wrong");
+//      });
+}
+</script>
+{% endblock %}

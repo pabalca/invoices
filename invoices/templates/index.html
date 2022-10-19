@@ -2,23 +2,23 @@
 
 {% block content %}
 
-{% if passwords  %}
+{% if invoices %}
 <div class="list-group">
-  {% for password in passwords %}
-    <div onclick="clipboard('{{password.id}}')" class="list-group-item list-group-item-action flex-column align-items-start">
+  {% for invoice in invoices %}
+    <div onclick="location.href='{{ url_for('edit_invoice', invoice_id=invoice.id) }}';" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">{{ password.website }}</h5>
+      <h5 class="mb-1">{{ invoice.company.name }} : {{ invoice.side }} {{ invoice.amount }}</h5>
       <div>
-        <small><a href="{{ url_for('edit_password', password_id=password.id) }}">view</a></small>
+        <small>{{ invoice.created_at }}</small>
       </div>
     </div>
-    <p class="mb-1">{{ password.user }}</p>
-    <input hidden type="text" id="{{password.id}}" value="{{password.passphrase}}">
+    <p class="mb-1">{{ invoice.company.kvk}} | {{ invoice.company.address }}</p>
+    <input hidden type="text" id="{{invoice.id}}" value="{{invoice.kvk}}">
   </div>
   {% endfor %}
 </div>
 {% else %}
-<p>You have not saved any passwords yet.</p>
+<p>You have not saved any invoices yet.</p>
 {% endif %}
 
 {% endblock %}
