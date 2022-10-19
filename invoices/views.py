@@ -11,11 +11,11 @@ from invoices.forms import (
     NewInvoiceForm,
     NewCompanyForm,
     SearchForm,
+    RegisterForm,
 )
 from invoices.models import Invoice, User, Company, db
 
 
-@app.route("/login", methods=["GET", "POST"])
 @app.route("/login/", methods=["GET", "POST"])
 def login():
     session["logged_in"] = False
@@ -173,3 +173,20 @@ def export_invoice(invoice_id):
         flash(f"Not found.")
         return redirect(url_for("index"))
     return render_template("export_invoice.html", invoice=invoice)
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        avatar = form.avatar.data
+        address = form.address.data
+        password = form.password.data
+        u = User(username=username, avatar=avatar, address=address, pwd=password)
+        db.session.add(u)
+        db.session.commit()
+        flash(f"Your user <{username} is saved.")        
+        return redirect(url_for("register"))
+    return render_template("register.html", form=form)
+

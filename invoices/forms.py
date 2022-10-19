@@ -40,3 +40,11 @@ class NewCompanyForm(FlaskForm):
 
 class DeleteCompanyForm(FlaskForm):
     submit = SubmitField("Yes, delete")
+
+
+class RegisterForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired()])
+    avatar = StringField("Avatar", validators=[DataRequired()])
+    address = StringField("Address", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Save")

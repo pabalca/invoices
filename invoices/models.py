@@ -13,13 +13,19 @@ def generate_uuid():
 
 class User(db.Model):
     id = db.Column(db.String, primary_key=True, default=generate_uuid)
+    username = db.Column(db.String)
+    avatar = db.Column(db.String)
+    address = db.Column(db.String)
     pwd_hash = db.Column(db.String)
 
-    def __init__(self, pwd):
+    def __init__(self, username, avatar, address, pwd):
+        self.username = username
+        self.avatar = avatar
+        self.address = address
         self.pwd_hash = generate_password_hash(pwd)
 
     def __repr__(self):
-        return f"<User> {self.id}"
+        return f"<User> {self.username}"
 
     def verify_invoice(self, pwd):
         return check_password_hash(self.pwd_hash, pwd)
