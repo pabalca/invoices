@@ -10,6 +10,7 @@
       <h5 class="mb-1">{{ invoice.company.name }} : {{ invoice.side }} {{ invoice.amount }}</h5>
       <div>
         <small>{{ invoice.created_at }}</small>
+        <small><a href="{{ url_for('export_invoice', invoice_id=invoice.id) }}">export</a></small>
       </div>
     </div>
     <p class="mb-1">{{ invoice.company.kvk}} | {{ invoice.company.address }}</p>

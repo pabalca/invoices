@@ -48,7 +48,6 @@ def index():
         search = form.search.data
         invoices = invoices.filter(
             or_(
-                Invoice.company.contains(search),
                 Invoice.amount.contains(search),
             )
         )
@@ -164,3 +163,13 @@ def delete_company(company_id):
         flash(f"Your company <{company_id}> is deleted.")
         return redirect(url_for("companies"))
     return render_template("delete_company.html", form=form, company=company)
+
+
+@app.route("/export/<invoice_id>", methods=["GET", "POST"])
+@login_required
+def export_invoice(invoice_id):
+    invoice = Invoice.query.filter(Invoice.id == invoice_id).first()
+    if not invoice:
+        flash(f"Not found.")
+        return redirect(url_for("index"))
+    return render_template("export_invoice.html", invoice=invoice)
