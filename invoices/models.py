@@ -43,7 +43,7 @@ class Company(db.Model):
 
 class Invoice(db.Model):
     id = db.Column(db.String, primary_key=True, default=generate_uuid)
-    user = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.Column(db.Integer, db.ForeignKey(User.id))
     company_id = db.Column(db.String, db.ForeignKey(Company.id))
     company = db.relationship(Company, backref='company')
     amount = db.Column(db.Integer)

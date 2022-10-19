@@ -168,11 +168,14 @@ def delete_company(company_id):
 @app.route("/export/<invoice_id>", methods=["GET", "POST"])
 @login_required
 def export_invoice(invoice_id):
+    user_id = session.get("user")
+    user = User.query.filter(User.id == user_id).first()
     invoice = Invoice.query.filter(Invoice.id == invoice_id).first()
+    
     if not invoice:
         flash(f"Not found.")
         return redirect(url_for("index"))
-    return render_template("export_invoice.html", invoice=invoice)
+    return render_template("export_invoice.html", user=user, invoice=invoice)
 
 
 @app.route("/register", methods=["GET", "POST"])
