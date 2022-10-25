@@ -45,7 +45,7 @@ class Invoice(db.Model):
     id = db.Column(db.String, primary_key=True, default=generate_uuid)
     user = db.Column(db.Integer, db.ForeignKey(User.id))
     company_id = db.Column(db.String, db.ForeignKey(Company.id))
-    company = db.relationship(Company, backref='company')
+    company = db.relationship(Company, backref='invoice')
     amount = db.Column(db.Integer)
     side = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -53,3 +53,14 @@ class Invoice(db.Model):
 
     def __repr__(self):
         return f"<Invoice {self.company}:{self.side}:{self.amount}>"
+
+
+class Charge(db.Model):
+    id = db.Column(db.String, primary_key=True, default=generate_uuid)
+    amount = db.Column(db.Integer)
+    side = db.Column(db.String)
+    invoice_id = db.Column(db.String, db.ForeignKey(Invoice.id))
+    invoice = db.relationship(Invoice, backref='charge')
+
+    def __repr__(self):
+        return f"<Charge> {self.amount} {self.side}"
