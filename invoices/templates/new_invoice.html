@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}New Rule{% endblock %}
+{% block title %}New Invoice{% endblock %}
 
 {% block content %}
 
-
-<form action="{{ url_for('rule') }}" method="post">
+<form method="post">
 {{ form.hidden_tag() }}
 {% for field in form if field.widget.input_type != 'hidden' %}
 {% if field.type == "SubmitField" %}

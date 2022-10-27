@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 style="color:Tomato;">Are you sure you want to delete the company?</h2>
+<hr>
+<h4 color="orange">{{ company.name }}</h4>
+<h5 color="orange">KVK: {{ company.kvk }}</h5>
+<h5 color="orange">ADDRESS: {{ company.address }}</h5>
+<hr>
+<form method="post">
+{{ form.hidden_tag() }}
+{% for field in form if field.widget.input_type != 'hidden' %}
+{% if field.type == "SubmitField" %}
+    {{ field(class='btn btn-danger') }}
+{% else %}
+    <div class="form-group">
+      {{ field.label }} {{ field(class='form-control') }}
+    </div>
+{% endif %}
+{% endfor %}
+</form>
+<br>
+
+{% endblock %}
