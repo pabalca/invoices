@@ -13,7 +13,7 @@ from invoices.forms import (
     SearchForm,
     RegisterForm,
 )
-from invoices.models import Invoice, User, Company, db
+from invoices.models import Invoice, User, Company, Charge, db
 
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -24,7 +24,7 @@ def login():
         challenge = form.challenge.data
         users = User.query.all()
         for user in users:
-            if user.verify_invoice(challenge):
+            if user.verify_password(challenge):
                 session["logged_in"] = True
                 session["user"] = user.id
                 return redirect(url_for("index"))
@@ -68,9 +68,14 @@ def new_invoice():
         user = session.get("user")
         company_id = form.company.data
         amount = form.amount.data
-        side = form.side.data
-        i = Invoice(user=user, company_id=company_id, amount=amount, side=side)
+        description = form.description.data
+
+        i = Invoice(user=user, company_id=company_id)
         db.session.add(i)
+        db.session.commit()
+
+        c = Charge(amount=amount, description=description, invoice_id=i.id)
+        db.session.add(c)
         db.session.commit()
         flash("Your invoice is saved.")
         return redirect(url_for("index"))
@@ -81,28 +86,19 @@ def new_invoice():
 @login_required
 def edit_invoice(invoice_id):
     form = EditInvoiceForm()
-    companies = [
-        (company.id, f"{company.name} : {company.kvk}")
-        for company in Company.query.order_by(Company.name.asc()).all()
-    ]
     invoice = Invoice.query.get(invoice_id)
     if form.validate_on_submit():
-        invoice.company = form.company.data
-        invoice.amount = form.amount.data
-        invoice.side = form.side.data
+        amount = form.amount.data
+        description = form.description.data
+        c = Charge(amount=amount, description=description, invoice_id=invoice.id)
+        db.session.add(c)
         db.session.commit()
         flash("Your invoice is updated.")
-        return redirect(url_for("index"))
-
-    form.company.choices = companies
-    # form.company.data = invoice.company  # preset form input's value
-    form.amount.data = invoice.amount
-    form.side.data = invoice.side
-    form.created_at.data = invoice.created_at
-    return render_template("edit_invoice.html", form=form)
+        return redirect(url_for("edit_invoice", invoice_id=invoice.id))
+    return render_template("edit_invoice.html", form=form, invoice=invoice)
 
 
-@app.route("/delete/<invoice_id>", methods=["POST"])
+@app.route("/delete/<invoice_id>", methods=["GET", "POST"])
 @login_required
 def delete_invoice(invoice_id):
     form = DeleteInvoiceForm()

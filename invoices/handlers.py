@@ -29,8 +29,10 @@ def createuser(pwd):
 
 @app.cli.command()
 def scrape():
+    u = User(username="admin", avatar="logo.png", address="Metaverse", pwd="admin")
+    db.session.add(u)
     for x in range(10):
         c = Company(name=f"Company {x}", kvk=x, address=f"Road {x}")
         db.session.add(c)
-        db.session.commit()
-        click.echo(f"{c.id} company created.")
+        click.echo(f"Company {x} created.")
+    db.session.commit()

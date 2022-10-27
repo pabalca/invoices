@@ -6,6 +6,31 @@
 
 <form method="post">
 {{ form.hidden_tag() }}
+
+<div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ invoice.company.name }}</h5>
+      <small>{{ invoice.created_at }}</small>
+    </div>
+    <p class="mb-1">Testing</p>
+    <p class="mb-1">
+      <ul class="list-group">
+      {% for item in invoice.charge %}
+        <li class="list-group-item">
+          {{ item.description }}
+          {{ item.amount }}
+        </li>
+      {% endfor %}
+      </ul>
+
+    </p>
+    <small>TOTAL: </small>
+  </a>
+</div>
+
+<hr>
+
 {% for field in form if field.widget.input_type != 'hidden' %}
 {% if field.type == "SubmitField" %}
     {{ field(class='btn btn-warning') }}
@@ -15,6 +40,7 @@
     </div>
 {% endif %}
 {% endfor %}
+
 </form>
 <br>
 

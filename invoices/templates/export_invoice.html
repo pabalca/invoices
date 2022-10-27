@@ -158,9 +158,10 @@
 				</tr>
 
 				<tr class="item">
-					<td>{{ invoice.side }}</td>
-
-					<td>{{ invoice.amount }}</td>
+                    {% for item in invoice.charge %}
+					<td>{{ item.description }}</td>
+					<td>{{ item.amount }}</td>
+                    {% endfor %}
 				</tr>
 
 				<tr class="total">

@@ -6,15 +6,13 @@ from wtforms.validators import DataRequired
 class NewInvoiceForm(FlaskForm):
     company = SelectField("Company", choices=[], validators=[DataRequired()])
     amount = StringField("Amount", validators=[DataRequired()])
-    side = StringField("Side", validators=[DataRequired()])
+    description = StringField("Description", validators=[DataRequired()])
     submit = SubmitField("Save")
 
 
 class EditInvoiceForm(FlaskForm):
-    company = SelectField("Company", choices=[], validators=[DataRequired()])
     amount = StringField("Amount", validators=[DataRequired()])
-    side = StringField("Side", validators=[DataRequired()])
-    created_at = StringField("Created", validators=[DataRequired()])
+    description = StringField("Description", validators=[DataRequired()])
     submit = SubmitField("Save")
 
 

@@ -27,7 +27,7 @@ class User(db.Model):
     def __repr__(self):
         return f"<User> {self.username}"
 
-    def verify_invoice(self, pwd):
+    def verify_password(self, pwd):
         return check_password_hash(self.pwd_hash, pwd)
 
 
@@ -46,21 +46,19 @@ class Invoice(db.Model):
     user = db.Column(db.Integer, db.ForeignKey(User.id))
     company_id = db.Column(db.String, db.ForeignKey(Company.id))
     company = db.relationship(Company, backref='invoice')
-    amount = db.Column(db.Integer)
-    side = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
     def __repr__(self):
-        return f"<Invoice {self.company}:{self.side}:{self.amount}>"
+        return f"<Invoice {self.company} - {self.created_at}>"
 
 
 class Charge(db.Model):
     id = db.Column(db.String, primary_key=True, default=generate_uuid)
     amount = db.Column(db.Integer)
-    side = db.Column(db.String)
+    description = db.Column(db.String)
     invoice_id = db.Column(db.String, db.ForeignKey(Invoice.id))
     invoice = db.relationship(Invoice, backref='charge')
 
     def __repr__(self):
-        return f"<Charge> {self.amount} {self.side}"
+        return f"<Charge> {self.amount} {self.description}"
