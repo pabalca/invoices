@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}New Invoice{% endblock %}
+{% block title %}New Rule{% endblock %}
 
 {% block content %}
 

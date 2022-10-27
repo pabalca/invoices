@@ -1,5 +1,4 @@
 Flask
 Flask-WTF
 Flask-SQLAlchemy
-click
 gunicorn

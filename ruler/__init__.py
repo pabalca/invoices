@@ -1,8 +1,12 @@
 import os
 
 from flask import Flask
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
+
+csrf = CSRFProtect(app)
+
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "secret string")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
     "DATABASE_URL",
@@ -11,9 +15,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
-from invoices.models import db
+from ruler.models import db
 
 db.init_app(app)
 
-import invoices.handlers
-import invoices.views
+import ruler.handlers
+import ruler.views
