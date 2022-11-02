@@ -157,17 +157,17 @@
 					<td>Price</td>
 				</tr>
 
-				<tr class="item">
                     {% for item in invoice.charge %}
+				<tr class="item">
 					<td>{{ item.description }}</td>
 					<td>{{ item.amount }}</td>
-                    {% endfor %}
 				</tr>
+                    {% endfor %}
 
 				<tr class="total">
 					<td></td>
 
-					<td>Total: $ {{ invoice.amount }}</td>
+					<td>Total: $ {{ total }}</td>
 				</tr>
 			</table>
 		</div>

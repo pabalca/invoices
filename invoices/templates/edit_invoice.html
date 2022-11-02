@@ -3,6 +3,16 @@
 {% block title %}Edit Invoice{% endblock %}
 
 {% block content %}
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="form-row align-items-center">
+    <div class="col-auto">{{ form['description'](class='form-control mb-2', placeholder="Description") }}</div>
+    <div class="col-auto">{{ form['amount'](class='form-control mb-2', placeholder="$") }}</div>
+    <div class="col-auto">{{ form['submit'](class='btn btn-success mb-2') }}</div>
+  </div>
+</form>
+<a href="{{ url_for('delete_invoice', invoice_id=invoice.id) }}" class="btn btn-warning">Delete</a>
+<hr>
 
 <form method="post">
 {{ form.hidden_tag() }}
@@ -25,23 +35,8 @@
       </ul>
 
     </p>
-    <small>TOTAL: </small>
+    <small>TOTAL: $ {{ total }} </small>
   </a>
 </div>
-
-<hr>
-
-{% for field in form if field.widget.input_type != 'hidden' %}
-{% if field.type == "SubmitField" %}
-    {{ field(class='btn btn-warning') }}
-{% else %}
-    <div class="form-group">
-      {{ field.label }} {{ field(class='form-control') }}
-    </div>
-{% endif %}
-{% endfor %}
-
-</form>
-<br>
 
 {% endblock %}

@@ -87,6 +87,7 @@ def new_invoice():
 def edit_invoice(invoice_id):
     form = EditInvoiceForm()
     invoice = Invoice.query.get(invoice_id)
+    total = sum([ x.amount for x in invoice.charge])
     if form.validate_on_submit():
         amount = form.amount.data
         description = form.description.data
@@ -95,7 +96,7 @@ def edit_invoice(invoice_id):
         db.session.commit()
         flash("Your invoice is updated.")
         return redirect(url_for("edit_invoice", invoice_id=invoice.id))
-    return render_template("edit_invoice.html", form=form, invoice=invoice)
+    return render_template("edit_invoice.html", form=form, invoice=invoice, total=total)
 
 
 @app.route("/delete/<invoice_id>", methods=["GET", "POST"])
@@ -167,11 +168,12 @@ def export_invoice(invoice_id):
     user_id = session.get("user")
     user = User.query.filter(User.id == user_id).first()
     invoice = Invoice.query.filter(Invoice.id == invoice_id).first()
+    total = sum([ x.amount for x in invoice.charge])
     
     if not invoice:
         flash(f"Not found.")
         return redirect(url_for("index"))
-    return render_template("export_invoice.html", user=user, invoice=invoice)
+    return render_template("export_invoice.html", user=user, invoice=invoice, total=total)
 
 
 @app.route("/register", methods=["GET", "POST"])
